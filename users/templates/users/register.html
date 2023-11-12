@@ -1,0 +1,64 @@
+{% extends 'main.html' %}
+
+{% block title %}Register{% endblock %}
+
+{% block body %}
+    <!-- Centered Form Container -->
+    <div class="section">
+        <div class="container">
+            <div class="columns is-centered">
+                <div class="column is-half">
+                    <!-- Card for the Form -->
+                    <div class="card">
+                        <header class="card-header">
+                            <p class="card-header-title">Register</p>
+                        </header>
+                        <div class="card-content">
+                            <!-- Form with Bulma Classes -->
+                            <form action="{% url 'register' %}" method="post">
+                                {% csrf_token %}
+                                
+                                <!-- Display Non-Field Errors -->
+                                {% if form.non_field_errors %}
+                                    <div class="notification is-danger">
+                                        {% for error in form.non_field_errors %}
+                                            <p>{{ error }}</p>
+                                        {% endfor %}
+                                    </div>
+                                {% endif %}
+
+                                <!-- Form Fields with Error Messages and Bulma Control Classes -->
+                                {% for field in form %}
+                                    <div class="field">
+                                        <label class="label">{{ field.label }}</label>
+                                        <div class="control">
+                                            <input class="{{ field.field.widget.attrs.class }} input {% if field.errors %}is-danger{% endif %}"
+                                                   type="{{ field.field.widget.input_type }}"
+                                                   name="{{ field.name }}"
+                                                   id="id_{{ field.name }}">
+                                        </div>
+                                        <!-- Display Field Errors -->
+                                        {% if field.errors %}
+                                            <p class="help is-danger">{{ field.errors|first }}</p>
+                                        {% endif %}
+                                        <!-- Display Help Text -->
+                                        {% if field.help_text %}
+                                            <div class="help">{{ field.help_text }}</div>
+                                        {% endif %}
+                                    </div>
+                                {% endfor %}
+
+                                <!-- Submit Button with Bulma Button Class -->
+                                <div class="field">
+                                    <p class="control">
+                                        <input type="submit" value="Register" class="button is-primary">
+                                    </p>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
