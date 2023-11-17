@@ -8,7 +8,83 @@
     {% endblock %}
 </head>
 <body>
-    {% block body %}
-    {% endblock %}
+{% block navbar %}
+    <nav class="navbar is-black" role="navigation" aria-label="main navigation">
+        <div class="navbar-brand">
+            <a class="navbar-item" href="/">
+                <h1 class="title" style="color: white;">Nebula</h1>
+            </a>
+
+            <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false"
+               data-target="navbarBasicExample">
+                <span aria-hidden="true"></span>
+                <span aria-hidden="true"></span>
+                <span aria-hidden="true"></span>
+            </a>
+        </div>
+
+        <div id="navbarBasicExample" class="navbar-menu">
+            <div class="navbar-start">
+                <a class="navbar-item">
+                    Strona główna
+                </a>
+
+                <a class="navbar-item">
+                    Filmy
+                </a>
+
+                <div class="navbar-item has-dropdown is-hoverable">
+                    <a class="navbar-link">
+                        Kategorie
+                    </a>
+
+                    <div class="navbar-dropdown">
+                        <a class="navbar-item">
+                            Sci-Fi
+                        </a>
+                        <a class="navbar-item">
+                            Fantasy
+                        </a>
+                        <a class="navbar-item">
+                            Horror
+                        </a>
+                        <a class="navbar-item">
+                            Akcja
+                        </a>
+                    </div>
+                </div>
+            </div>
+            {% if not user.is_authenticated %}
+                <div class="navbar-end">
+                    <div class="navbar-item">
+                        <div class="buttons">
+                            <a class="button is-link" href="{% url 'register' %}">
+                                <strong>Rejestruj</strong>
+                            </a>
+                            <a class="button is-light" href="{% url 'login' %}">
+                                Zaloguj się
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            {% else %}
+                <div class="navbar-end">
+                    <div class="navbar-item">
+                        <div class="buttons">
+                            <a class="button is-link" href="{% url 'login' %}">
+                                Witaj&nbsp<strong>{{ user }}</strong>!
+                            </a>
+                            <a class="button is-link" href="{% url 'logout' %}">
+                                Wyloguj się
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            {% endif %}
+        </div>
+    </nav>
+{% endblock %}
+{% block body %}
+{% endblock %}
 </body>
 </html>
