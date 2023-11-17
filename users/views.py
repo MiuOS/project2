@@ -1,7 +1,11 @@
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
+from django.views.generic import DetailView
+
 from .forms import CustomUserCreationForm, LoginForm
+from .models import CustomUser
+
 
 def register_request(request):
     if request.user.is_authenticated:
@@ -40,4 +44,15 @@ def login_request(request):
 @login_required(login_url="login")
 def logout_request(request):
     logout(request)
-    return redirect("register")
+    return redirect("home")
+
+class ProfileDetailView(DetailView):
+    model = CustomUser
+    template_name = "users/profile.html"
+    slug_field = "username"
+    slug_url_kwarg = "username"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        return context
