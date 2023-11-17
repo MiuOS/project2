@@ -1,6 +1,69 @@
 {% extends 'main.html' %}
 
 {% block body %}
-    <span class="tag is-primary">Test</span>asd
+    <section class="section">
+        <div class="container">
+            <!-- Nagłówek -->
+            <h1 class="title is-1">Witamy w Nebula</h1>
+            <p class="subtitle">
+                Twoje premierowe miejsce do streamowania fantastycznych filmów i seriali. Odkryj nasze starannie dobrane kolekcje i znajdź swoje następne ulubione filmy lub seriale!
+            </p>
+
+            <!-- Rekomendacje -->
+            <h2 class="title is-2">Nasze najlepsze rekomendacje</h2>
+            <p>Obejrzyj te specjalnie dla Ciebie wybrane filmy. Zanurz się w te ekscytujące historie!</p>
+            <div class="columns is-multiline">
+                {% for recommendation in recommendations %}
+                    <div class="column is-one-quarter">
+                        <div class="card">
+                            <div class="card-image">
+                                <video controls>
+                                    <source src="{{ recommendation.movie.file.url }}" type="video/mp4">
+                                    Twoja przeglądarka nie obsługuje tagu video.
+                                </video>
+                            </div>
+                            <div class="card-content">
+                                <p class="title is-5">{{ recommendation.movie.title }}</p>
+                                <p class="subtitle is-6">{{ recommendation.movie.year }}</p>
+                                <div class="content">
+                                    {{ recommendation.movie.description|truncatewords:20 }}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% empty %}
+                    <p class="is-size-5">Aktualnie brak rekomendacji. Sprawdź ponownie wkrótce!</p>
+                {% endfor %}
+            </div>
+
+            <!-- Kategorie -->
+            <h2 class="title is-2">Odkrywaj według kategorii</h2>
+            <p>Szukasz czegoś konkretnego? Przeglądaj przez nasze różnorodne kategorie.</p>
+            <div class="tags are-medium">
+                {% for category in categories %}
+                    <span class="tag is-link">{{ category.name }}</span>
+                {% empty %}
+                    <p>Brak dostępnych kategorii w tym momencie.</p>
+                {% endfor %}
+            </div>
+
+            <!-- Recenzje -->
+            <h2 class="title is-2">Co mówią nasi widzowie</h2>
+            <p>Zobacz najnowsze recenzje od naszej społeczności. Dołącz do dyskusji!</p>
+            <div class="content">
+                {% for review in reviews %}
+                    <article class="message {% if review.rating >= 5 %}is-success{% else %}is-danger{% endif %}">
+                        <div class="message-body">
+                            <strong>{{ review.movie.title }} - {{ review.user.username }}</strong>
+                            <p>{{ review.text }}</p>
+                            <small>Ocena: {{ review.rating }}/100 - Dodano: {{ review.added|date:"Y-m-d" }}</small>
+                        </div>
+                    </article>
+                {% empty %}
+                    <p>Brak najnowszych recenzji. Bądź pierwszy, który podzieli się swoimi przemyśleniami!</p>
+                {% endfor %}
+            </div>
+            </div>
+        </div>
+    </section>
 {% endblock %}
-```
