@@ -71,6 +71,11 @@
                 <div class="navbar-end">
                     <div class="navbar-item">
                         <div class="buttons">
+                            {% if user.is_superuser %}
+                                <a class="button is-link" href="/admin">
+                                    <strong>Panel administratora</strong>
+                                </a>
+                            {% endif %}
                             <a class="button is-link" href="{% url 'profile' user|slugify %}">
                                 Witaj&nbsp<strong>{{ user }}</strong>!
                             </a>
