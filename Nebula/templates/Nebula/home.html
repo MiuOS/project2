@@ -6,7 +6,8 @@
             <!-- Nagłówek -->
             <h1 class="title is-1">Witamy w Nebula</h1>
             <p class="subtitle">
-                Twoje premierowe miejsce do streamowania fantastycznych filmów i seriali. Odkryj nasze starannie dobrane kolekcje i znajdź swoje następne ulubione filmy lub seriale!
+                Twoje premierowe miejsce do streamowania fantastycznych filmów i seriali. Odkryj nasze starannie dobrane
+                kolekcje i znajdź swoje następne ulubione filmy lub seriale!
             </p>
 
             <!-- Rekomendacje -->
@@ -16,8 +17,8 @@
                 {% for recommendation in recommendations %}
                     <div class="column is-one-quarter">
                         <div class="card">
-                            <div class="card-image">
-                                <video controls>
+                            <div class="card-image video-container is-flex-centered">
+                                <video controls class="video-fixed-height">
                                     <source src="{{ recommendation.movie.file.url }}" type="video/mp4">
                                     Twoja przeglądarka nie obsługuje tagu video.
                                 </video>
@@ -63,7 +64,25 @@
                     <p>Brak najnowszych recenzji. Bądź pierwszy, który podzieli się swoimi przemyśleniami!</p>
                 {% endfor %}
             </div>
-            </div>
+        </div>
         </div>
     </section>
+{% endblock %}
+
+{% block head %}
+    <style>
+        .video-container {
+            display: flex;
+            justify-content: center; /* Center horizontally */
+            align-items: center; /* Center vertically */
+            height: 200px; /* Same height as your video */
+            background: #eee;
+        }
+
+        .video-fixed-height {
+            max-height: 100%;
+            width: auto;
+            object-fit: cover; /* This will ensure the video covers the defined area without stretching */
+        }
+    </style>
 {% endblock %}

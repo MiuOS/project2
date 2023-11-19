@@ -9,7 +9,7 @@
             <div class="columns is-centered">
                 <div class="column is-half">
                     <!-- Card for the Form -->
-                    <div class="card" >
+                    <div class="card">
                         <header class="card-header">
                             <p class="card-header-title">Zaloguj się</p>
                         </header>
@@ -17,7 +17,9 @@
                             <!-- Form with Bulma Classes -->
                             <form action="{% url 'login' %}" method="post">
                                 {% csrf_token %}
-
+                                {% if next %}
+                                    <input type="hidden" name="next" value="{{ next }}">
+                                {% endif %}
                                 <!-- Display Non-Field Errors -->
                                 {% if form.non_field_errors %}
                                     <div class="notification is-danger">
@@ -30,12 +32,15 @@
                                 <!-- Form Fields with Error Messages and Bulma Control Classes -->
                                 {% for field in form %}
                                     <div class="field">
-                                        <label class="label">{{ field.label }}</label>
+                                        {% if field.field.widget.input_type != "hidden" %}
+                                            <label class="label">{{ field.label }}</label>
+                                        {% endif %}
                                         <div class="control">
                                             <input class="{{ field.field.widget.attrs.class }} input {% if field.errors %}is-danger{% endif %}"
                                                    type="{{ field.field.widget.input_type }}"
                                                    name="{{ field.name }}"
-                                                   id="id_{{ field.name }}">
+                                                   id="id_{{ field.name }}"
+                                                   {% if field.value %}value="{{ field.value }}" {% endif %}>
                                         </div>
                                         <!-- Display Field Errors -->
                                         {% if field.errors %}
