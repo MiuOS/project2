@@ -8,7 +8,7 @@
             <!-- Video Player -->
             <div class="video-container">
                 {% if movie.file %}
-                    <video controls>
+                    <video class="video-player" controls>
                         <source src="{{ movie.file.url }}" type="video/mp4">
                         Twoja przeglądarka nie wspiera video.
                     </video>
@@ -24,7 +24,9 @@
                 </div>
             </div>
 
-            <a href="{% url 'add_review' movie.pk %}">Dodaj recenzję.</a>
+            <a href="{% url 'add_review' movie.pk %}" class="button is-primary is-outlined">
+                Dodaj recenzję
+            </a>
 
             <!-- Reviews Section -->
             <div class="box">
@@ -47,6 +49,16 @@
 
 {% block head %}
     <style>
+        .video-player{
+            max-height: 100vh;
+            width: auto;
+        }
+
+        .video-player source{
+            max-height: 100vh;
+            width: auto;
+        }
+
         .background-image {
             position: fixed;
             top: 0;
@@ -55,13 +67,15 @@
             min-height: 100%;
             background-image: url('{{ movie.large_cover.url }}');
             background-size: cover;
-            filter: blur(6px);
+            filter: blur(10px);
             z-index: -1;
         }
 
         .video-container {
             position: relative;
             z-index: 1;
+            display: flex;
+            justify-content: center;
         }
 
         video {
