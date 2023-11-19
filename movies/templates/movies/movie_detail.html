@@ -10,7 +10,7 @@
                 {% if movie.file %}
                     <video controls>
                         <source src="{{ movie.file.url }}" type="video/mp4">
-                        Your browser does not support the video tag.
+                        Twoja przeglądarka nie wspiera video.
                     </video>
                 {% endif %}
             </div>
@@ -34,11 +34,11 @@
                         <strong>{{ review.user.username }}</strong>
                         <p>Rating: {{ review.rating }}/10</p>
                         <p>{{ review.text }}</p>
-                        <p class="is-size-7">Added on: {{ review.added|date:"Y-m-d H:i" }}</p>
+                        <p class="is-size-7">Dodano: {{ review.added|date:"Y-m-d H:i" }}</p>
                         <hr>
                     </div>
                 {% empty %}
-                    <p class="is-size-5">No reviews yet. Be the first to review!</p>
+                    <p class="is-size-5">Brak ocen. Bądź pierwszy/a!</p>
                 {% endfor %}
             </div>
         </div>
