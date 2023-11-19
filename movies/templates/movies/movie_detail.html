@@ -1,0 +1,54 @@
+{% extends 'main.html' %}
+
+{% block body %}
+    <div class="background-image"></div>
+
+    <section class="section">
+        <div class="container">
+            <!-- Video Player -->
+            <div class="video-container">
+                {% if movie.file %}
+                    <video controls>
+                        <source src="{{ movie.file.url }}" type="video/mp4">
+                        Your browser does not support the video tag.
+                    </video>
+                {% endif %}
+            </div>
+
+            <!-- Movie Details -->
+            <div class="box">
+                <p class="title is-4">{{ movie.title }}</p>
+                <p class="subtitle is-6">{{ movie.year }}</p>
+                <div class="content">
+                    {{ movie.description }}
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock %}
+
+{% block head %}
+    <style>
+        .background-image {
+            position: fixed;
+            top: 0;
+            left: 0;
+            min-width: 100%;
+            min-height: 100%;
+            background-image: url('{{ movie.large_cover.url }}');
+            background-size: cover;
+            filter: blur(6px);
+            z-index: -1;
+        }
+
+        .video-container {
+            position: relative;
+            z-index: 1;
+        }
+
+        video {
+            width: 100%;
+            border: none;
+        }
+    </style>
+{% endblock %}

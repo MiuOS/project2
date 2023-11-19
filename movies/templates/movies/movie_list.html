@@ -6,26 +6,27 @@
             <div class="columns is-multiline">
                 {% for movie in movies %}
                     <div class="column is-one-quarter">
-                        <div class="card">
-                            <div class="card-image">
-                                <figure class="image is-square">
-                                    <img src="{{ movie.cover.url }}" alt="{{ movie.title }}">
-                                </figure>
-                            </div>
-                            <div class="card-content">
-                                <p class="title is-5">{{ movie.title }}</p>
-                                <p class="subtitle is-6">{{ movie.year }}</p>
-                                <div class="content">
-                                    {{ movie.description|truncatewords:20 }}
+                        <a href="{% url 'movie_detail' movie.pk %}">
+                            <div class="card movie-card">
+                                <div class="card-image">
+                                    <figure class="image is-square">
+                                        <img src="{{ movie.cover.url }}" alt="{{ movie.title }}">
+                                    </figure>
+                                </div>
+                                <div class="card-content">
+                                    <p class="title is-5">{{ movie.title }}</p>
+                                    <p class="subtitle is-6">{{ movie.year }}</p>
+                                    <div class="content">
+                                        {{ movie.description|truncatewords:20 }}
+                                    </div>
                                 </div>
                             </div>
-                        </div>
+                        </a>
                     </div>
                 {% empty %}
                     <p>No movies available.</p>
                 {% endfor %}
             </div>
-
             <!-- Pagination -->
             <nav class="pagination" role="navigation" aria-label="pagination">
                 {% if page_obj.has_previous %}
@@ -54,4 +55,20 @@
             </nav>
         </div>
     </section>
+{% endblock %}
+
+{% block head %}
+    <style>
+        .movie-card .card-content {
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .movie-card .title, .movie-card .subtitle {
+            white-space: normal;
+            word-wrap: break-word;
+        }
+    </style>
 {% endblock %}
