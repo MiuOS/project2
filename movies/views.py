@@ -39,6 +39,33 @@ class CategoryListView(ListView):
     template_name = 'movies/category_list.html'
     context_object_name = 'categories'
 
+class FavoriteListView(ListView):
+    model = Movie
+    template_name = 'movies/movie_list.html'
+    context_object_name = 'movies'
+    paginate_by = 10
+
+    def get_queryset(self):
+        return Movie.objects.filter(favorite_list__user=self.request.user)
+
+class WatchLaterListView(ListView):
+    model = Movie
+    template_name = 'movies/movie_list.html'
+    context_object_name = 'movies'
+    paginate_by = 10
+
+    def get_queryset(self):
+        return Movie.objects.filter(watch_later_list__user=self.request.user)
+
+class HistoryListView(ListView):
+    model = Movie
+    template_name = 'movies/movie_list.html'
+    context_object_name = 'movies'
+    paginate_by = 10
+
+    def get_queryset(self):
+        return Movie.objects.filter(history__user=self.request.user)
+
 def add_review(request, movie_id):
     movie = get_object_or_404(Movie, pk=movie_id)
     if request.method == 'POST':

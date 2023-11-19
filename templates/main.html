@@ -38,6 +38,17 @@
                 <a class="navbar-item" href="{% url 'category_list' %}">
                     Kategorie
                 </a>
+                {% if user.is_authenticated %}
+                    <a class="navbar-item" href="{% url 'history' %}">
+                        Historia
+                    </a>
+                    <a class="navbar-item" href="{% url 'favourites' %}">
+                        Ulubione
+                    </a>
+                    <a class="navbar-item" href="{% url 'watch_later' %}">
+                        Do obejrzenia
+                    </a>
+                {% endif %}
             </div>
             {% if not user.is_authenticated %}
                 <div class="navbar-end">

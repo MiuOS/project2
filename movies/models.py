@@ -32,7 +32,7 @@ class WatchLaterList(models.Model):
         return f"{self.user} - {self.movie}"
 
 class Recommendation(models.Model):
-    movie = models.ForeignKey("Movie", on_delete=models.CASCADE, related_name="recommendations", unique=True)
+    movie = models.OneToOneField("Movie", on_delete=models.CASCADE, related_name="recommendations")
 
     def __str__(self):
         return f"{self.movie}"
