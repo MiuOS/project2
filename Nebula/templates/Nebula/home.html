@@ -17,11 +17,12 @@
                 {% for recommendation in recommendations %}
                     <div class="column is-one-quarter">
                         <div class="card">
-                            <div class="card-image video-container is-flex-centered">
-                                <video controls class="video-fixed-height">
-                                    <source src="{{ recommendation.movie.file.url }}" type="video/mp4">
-                                    Twoja przeglądarka nie obsługuje tagu video.
-                                </video>
+                            <div class="card-image">
+                                <!-- Image instead of video -->
+                                <div class="image-container is-flex-centered">
+                                    <img src="{{ recommendation.movie.cover.url }}"
+                                         alt="{{ recommendation.movie.title }}" class="image-fixed-height">
+                                </div>
                             </div>
                             <div class="card-content">
                                 <p class="title is-5">{{ recommendation.movie.title }}</p>
@@ -71,18 +72,17 @@
 
 {% block head %}
     <style>
-        .video-container {
+        .image-container {
             display: flex;
             justify-content: center; /* Center horizontally */
             align-items: center; /* Center vertically */
-            height: 200px; /* Same height as your video */
-            background: #eee;
+            height: 200px; /* Set a fixed height */
         }
 
-        .video-fixed-height {
+        .image-fixed-height {
             max-height: 100%;
             width: auto;
-            object-fit: cover; /* This will ensure the video covers the defined area without stretching */
+            object-fit: cover; /* Ensures the image covers the area without stretching */
         }
     </style>
 {% endblock %}

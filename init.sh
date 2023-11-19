@@ -18,6 +18,9 @@ else
   echo "Połączenie z bazą danych nawiązane."
 fi
 
+# Zainstaluj zależności
+pip install -r requirements.txt
+
 # Tworzenie migracji
 python manage.py makemigrations
 
