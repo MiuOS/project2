@@ -16,25 +16,29 @@
             <div class="columns is-multiline">
                 {% for recommendation in recommendations %}
                     <div class="column is-one-quarter">
-                        <div class="card">
-                            <div class="card-image">
-                                <figure class="image is-square">
-                                    <img src="{{ recommendation.movie.cover.url }}" alt="{{ recommendation.movie.title }}">
-                                </figure>
-                            </div>
-                            <div class="card-content">
-                                <p class="title is-5">{{ recommendation.movie.title }}</p>
-                                <p class="subtitle is-6">{{ recommendation.movie.year }}</p>
-                                <div class="content">
-                                    {{ recommendation.movie.description|truncatewords:20 }}
+                        <a href="{% url 'movie_detail' recommendation.movie.pk %}">
+                            <div class="card recommendation-card">
+                                <div class="card-image">
+                                    <figure class="image is-square">
+                                        <img src="{{ recommendation.movie.cover.url }}"
+                                             alt="{{ recommendation.movie.title }}">
+                                    </figure>
+                                </div>
+                                <div class="card-content">
+                                    <p class="title is-5">{{ recommendation.movie.title }}</p>
+                                    <p class="subtitle is-6">{{ recommendation.movie.year }}</p>
+                                    <div class="content">
+                                        {{ recommendation.movie.description|truncatewords:20 }}
+                                    </div>
                                 </div>
                             </div>
-                        </div>
+                        </a>
                     </div>
                 {% empty %}
                     <p class="is-size-5">Aktualnie brak rekomendacji. Sprawdź ponownie wkrótce!</p>
                 {% endfor %}
             </div>
+
 
             <!-- Kategorie -->
             <h2 class="title is-2">Odkrywaj według kategorii</h2>
@@ -82,5 +86,18 @@
             width: auto;
             object-fit: cover; /* Ensures the image covers the area without stretching */
         }
+
+        .recommendation-card .card-content {
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .recommendation-card .title, .recommendation-card .subtitle {
+            white-space: normal;
+            word-wrap: break-word;
+        }
+    </style>
     </style>
 {% endblock %}
