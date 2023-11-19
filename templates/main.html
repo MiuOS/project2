@@ -1,9 +1,44 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="dark-mode">
 <head>
     <meta charset="UTF-8">
     <title>{% if title %}{{ title }}{% else %}Nebula - najlepsza platforma stramingowa!{% endif %} </title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
+    <style>
+        html.dark-mode {
+            background-color: #121212;
+            color: #ffffff;
+        }
+
+        html.dark-mode body{
+            background-color: #121212;
+            color: #ffffff;
+        }
+
+        html.dark-mode a {
+            color: #4a90e2; /* Jasnoniebieski dla lepszej widoczności */
+        }
+
+        html.dark-mode .button {
+            color: #fff;
+        }
+
+        html.dark-mode .title {
+            color: #fff;
+        }
+
+        html.dark-mode .subtitle {
+            color: #fff;
+        }
+
+        html.dark-mode .card {
+            background-color: hsl(0, 0%, 21%);
+        }
+
+        html.dark-mode .card-content {
+            color: white;
+        }
+    </style>
     {% block head %}
     {% endblock %}
 </head>
@@ -44,7 +79,7 @@
                             <a class="button is-link" href="{% url 'register' %}">
                                 <strong>Rejestruj</strong>
                             </a>
-                            <a class="button is-light" href="{% url 'login' %}">
+                            <a class="button is-dark" href="{% url 'login' %}">
                                 Zaloguj się
                             </a>
                         </div>
