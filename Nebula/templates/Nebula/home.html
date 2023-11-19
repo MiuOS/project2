@@ -18,11 +18,9 @@
                     <div class="column is-one-quarter">
                         <div class="card">
                             <div class="card-image">
-                                <!-- Image instead of video -->
-                                <div class="image-container is-flex-centered">
-                                    <img src="{{ recommendation.movie.cover.url }}"
-                                         alt="{{ recommendation.movie.title }}" class="image-fixed-height">
-                                </div>
+                                <figure class="image is-square">
+                                    <img src="{{ recommendation.movie.cover.url }}" alt="{{ recommendation.movie.title }}">
+                                </figure>
                             </div>
                             <div class="card-content">
                                 <p class="title is-5">{{ recommendation.movie.title }}</p>
