@@ -9,6 +9,28 @@ class Category(models.Model):
     def __str__(self):
         return f"{self.name}"
 
+class History(models.Model):
+    user = models.ForeignKey("users.CustomUser", on_delete=models.CASCADE, related_name="history")
+    movie = models.ForeignKey("Movie", on_delete=models.CASCADE, related_name="history")
+
+    def __str__(self):
+        return f"{self.user} - {self.movie}"
+
+class FavoriteList(models.Model):
+    user = models.ForeignKey("users.CustomUser", on_delete=models.CASCADE, related_name="favorite_list")
+    movie = models.ForeignKey("Movie", on_delete=models.CASCADE, related_name="favorite_list")
+
+    def __str__(self):
+        return f"{self.user} - {self.movie}"
+
+class WatchLaterList(models.Model):
+    user = models.ForeignKey("users.CustomUser", on_delete=models.CASCADE, related_name="watch_later_list")
+    movie = models.ForeignKey("Movie", on_delete=models.CASCADE, related_name="watch_later_list")
+    watched = models.BooleanField(default=False)
+
+    def __str__(self):
+        return f"{self.user} - {self.movie}"
+
 class Recommendation(models.Model):
     movie = models.ForeignKey("Movie", on_delete=models.CASCADE, related_name="recommendations", unique=True)
 

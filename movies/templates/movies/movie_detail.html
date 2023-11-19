@@ -24,10 +24,27 @@
                 </div>
             </div>
 
-            <a href="{% url 'add_review' movie.pk %}" class="button is-primary is-outlined">
+            <a href="{% url 'add_review' movie.pk %}" class="button is-link">
                 Dodaj recenzję
             </a>
-
+            {% if favourite %}
+                <a href="{% url 'favourite_toggle' movie.pk %}" class="button is-danger">
+                    Usuń z ulubionych
+                </a>
+            {% else %}
+                <a href="{% url 'favourite_toggle' movie.pk %}" class="button is-link">
+                    Dodaj do ulubiomych
+                </a>
+            {% endif %}
+            {% if watch_later %}
+                <a href="{% url 'watch_later_toggle' movie.pk %}" class="button is-danger">
+                    Usuń z do obejrzenia
+                </a>
+            {% else %}
+                <a href="{% url 'watch_later_toggle' movie.pk %}" class="button is-link">
+                    Obejrzyj później
+                </a>
+            {% endif %}
             <!-- Reviews Section -->
             <div class="box">
                 <h2 class="title is-4">Reviews</h2>
@@ -45,16 +62,61 @@
             </div>
         </div>
     </section>
+
+    <script>
+    document.addEventListener('DOMContentLoaded', () => {
+            const video = document.querySelector('video');
+            video.addEventListener('play', () => {
+                addToHistory({{ movie.pk }});
+            });
+        });
+    </script>
 {% endblock %}
 
 {% block head %}
+    <script>
+        function addToHistory(movieId) {
+            fetch(`/movies/${movieId}/add_to_history`, {
+                method: 'POST',
+                headers: {
+                    'X-CSRFToken': getCookie('csrftoken'), // CSRF token is needed for Django POST requests
+                    'Content-Type': 'application/json',
+                },
+                credentials: 'same-origin' // This is required for including the CSRF token
+            })
+                .then(response => {
+                    if (response.ok) {
+                        console.log('Movie added to history successfully.');
+                    } else {
+                        console.error('Failed to add movie to history.');
+                    }
+                })
+                .catch(error => console.error('Error:', error));
+        }
+
+        // Helper function to get the CSRF token from cookies
+        function getCookie(name) {
+            let cookieValue = null;
+            if (document.cookie && document.cookie !== '') {
+                const cookies = document.cookie.split(';');
+                for (let i = 0; i < cookies.length; i++) {
+                    const cookie = cookies[i].trim();
+                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
+    </script>
     <style>
-        .video-player{
+        .video-player {
             max-height: 100vh;
             width: auto;
         }
 
-        .video-player source{
+        .video-player source {
             max-height: 100vh;
             width: auto;
         }

@@ -1,10 +1,10 @@
+from django.http import HttpResponse
 from django.shortcuts import render, get_object_or_404, redirect
 from django.views.decorators.http import require_POST
 from django.views.generic import ListView, DetailView
 from django.core.paginator import Paginator
-from movies.models import Movie, Category, Review
+from movies.models import Movie, Category, Review, FavoriteList, WatchLaterList, History
 from .forms import ReviewForm
-
 
 # Create your views here.
 
@@ -30,6 +30,8 @@ class MovieDetailView(DetailView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['reviews'] = Review.objects.filter(movie=self.object)
+        context['favourite'] = FavoriteList.objects.filter(user=self.request.user, movie=self.object).exists()
+        context['watch_later'] = WatchLaterList.objects.filter(user=self.request.user, movie=self.object).exists()
         return context
 
 class CategoryListView(ListView):
@@ -54,3 +56,31 @@ def add_review(request, movie_id):
     else:
         form = ReviewForm()
     return render(request, 'movies/add_review.html', {'form': form, 'movie': movie})
+
+def favourite_toggle(request, movie_id):
+    if not request.user.is_authenticated:
+        return redirect('login')
+    movie = get_object_or_404(Movie, pk=movie_id)
+    if FavoriteList.objects.filter(user=request.user, movie=movie).exists():
+        FavoriteList.objects.filter(user=request.user, movie=movie).delete()
+    else:
+        FavoriteList.objects.create(user=request.user, movie=movie)
+    return redirect('movie_detail', pk=movie_id)
+
+def watch_later_toggle(request, movie_id):
+    if not request.user.is_authenticated:
+        return redirect('login')
+    movie = get_object_or_404(Movie, pk=movie_id)
+    if WatchLaterList.objects.filter(user=request.user, movie=movie).exists():
+        WatchLaterList.objects.filter(user=request.user, movie=movie).delete()
+    else:
+        WatchLaterList.objects.create(user=request.user, movie=movie)
+    return redirect('movie_detail', pk=movie_id)
+
+def add_to_history(request, movie_id):
+    if not request.user.is_authenticated:
+        return redirect('login')
+    movie = get_object_or_404(Movie, pk=movie_id)
+    if not History.objects.filter(user=request.user, movie=movie).exists():
+        History.objects.create(user=request.user, movie=movie)
+    return HttpResponse(status=200)
