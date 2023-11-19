@@ -20,7 +20,7 @@ class Review(models.Model):
     user = models.ForeignKey("users.CustomUser", on_delete=models.CASCADE, related_name="reviews")
     text = models.TextField()
     added = models.DateTimeField(auto_now_add=True)
-    rating = models.PositiveIntegerField(validators=[MinValueValidator(1), MaxValueValidator(100)])
+    rating = models.PositiveIntegerField(validators=[MinValueValidator(1), MaxValueValidator(10)])
 
     def __str__(self):
         return f"{self.movie} - {self.user}"

@@ -23,6 +23,24 @@
                     {{ movie.description }}
                 </div>
             </div>
+
+            <a href="{% url 'add_review' movie.pk %}">Dodaj recenzję.</a>
+
+            <!-- Reviews Section -->
+            <div class="box">
+                <h2 class="title is-4">Reviews</h2>
+                {% for review in reviews %}
+                    <div class="content">
+                        <strong>{{ review.user.username }}</strong>
+                        <p>Rating: {{ review.rating }}/10</p>
+                        <p>{{ review.text }}</p>
+                        <p class="is-size-7">Added on: {{ review.added|date:"Y-m-d H:i" }}</p>
+                        <hr>
+                    </div>
+                {% empty %}
+                    <p class="is-size-5">No reviews yet. Be the first to review!</p>
+                {% endfor %}
+            </div>
         </div>
     </section>
 {% endblock %}

@@ -60,7 +60,7 @@
                         <div class="message-body">
                             <strong>{{ review.movie.title }} - {{ review.user.username }}</strong>
                             <p>{{ review.text }}</p>
-                            <small>Ocena: {{ review.rating }}/100 - Dodano: {{ review.added|date:"Y-m-d" }}</small>
+                            <small>Ocena: {{ review.rating }}/10 - Dodano: {{ review.added|date:"Y-m-d" }}</small>
                         </div>
                     </article>
                 {% empty %}
