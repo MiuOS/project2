@@ -1,0 +1,22 @@
+{% extends 'main.html' %}
+
+{% block body %}
+    <section class="section">
+        <div class="container">
+            <h1 class="title">Movie Categories</h1>
+            <div class="columns is-multiline">
+                {% for category in categories %}
+                    <div class="column is-one-third">
+                        <div class="box">
+                            <!-- You can replace the '#' with a URL to the category detail page if you have one -->
+                            <a href="{% url 'movies_by_category' category.name %}" class="is-size-4">{{ category.name }}</a>
+                        </div>
+                    </div>
+                {% empty %}
+                    <p>No categories available.</p>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+{% endblock %}
+```

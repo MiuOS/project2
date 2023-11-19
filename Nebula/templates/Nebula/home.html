@@ -45,7 +45,7 @@
             <p>Szukasz czegoś konkretnego? Przeglądaj przez nasze różnorodne kategorie.</p>
             <div class="tags are-medium">
                 {% for category in categories %}
-                    <span class="tag is-link">{{ category.name }}</span>
+                    <a class="tag is-link" href="{% url 'movies_by_category' category.name %}"><span>{{ category.name }}</span></a>
                 {% empty %}
                     <p>Brak dostępnych kategorii w tym momencie.</p>
                 {% endfor %}
