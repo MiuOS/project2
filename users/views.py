@@ -5,7 +5,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.views.generic import DetailView
 from django.contrib.auth.mixins import LoginRequiredMixin
 
-from .forms import CustomUserCreationForm, LoginForm
+from .forms import CustomUserCreationForm, LoginForm, EditProfileForm
 from .models import CustomUser
 
 
@@ -51,6 +51,17 @@ def login_request(request):
 def logout_request(request):
     logout(request)
     return redirect("home")
+
+@login_required(login_url="login")
+def edit_profile(request):
+    if request.method == "POST":
+        form = EditProfileForm(request.POST, instance=request.user)
+        if form.is_valid():
+            form.save()
+            return redirect("profile", username=request.user.username)
+    else:
+        form = EditProfileForm(instance=request.user)
+    return render(request, "users/edit_profile.html", {"form": form})
 
 class ProfileDetailView(LoginRequiredMixin, DetailView):
     model = CustomUser
