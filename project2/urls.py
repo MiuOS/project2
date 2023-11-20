@@ -25,6 +25,7 @@ urlpatterns = [
     path("auth/", include("users.urls")),
     path("", include("Nebula.urls")),
     path("movies/", include("movies.urls")),
+    path("notifications/", include("notifications.urls")),
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

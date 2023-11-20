@@ -10,6 +10,8 @@
     {% endblock %}
 </head>
 <body>
+<div class="notifications" style="position: fixed; top: 10px; right: 10px; z-index: 1000; max-width: 300px;">
+</div>
 {% block navbar %}
     <nav class="navbar is-black" role="navigation" aria-label="main navigation">
         <div class="navbar-brand">
@@ -88,10 +90,60 @@
 {% block body %}
 {% endblock %}
 <script>
-    document.addEventListener("DOMContentLoaded", () => {
-        if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
-            document.body.classList.add('dark-mode');
+    function getNotifications() {
+        const url = '{% url 'get_notifications' %}'; // Replace with the actual URL
+
+        fetch(url, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': getCookie('csrftoken') // Fetch CSRF token from cookies
+            },
+            credentials: 'same-origin'
+        })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok ' + response.statusText);
+                }
+                return response.json();
+            })
+            .then(data => {
+                const notificationsContainer = document.querySelector('.notifications');
+                data.notifications.forEach(notification => {
+                    const elem = document.createElement('div');
+                    elem.classList.add('notification', notification.color); // Adding Bulma classes
+                    elem.innerHTML = `<strong>${notification.title}</strong>: ${notification.content}`;
+
+                    elem.addEventListener('mousedown', () => {
+                        elem.remove();
+                    });
+
+                    notificationsContainer.appendChild(elem);
+                });
+            })
+            .catch(error => {
+                console.error('There was a problem with the fetch operation:', error);
+            });
+    }
+
+    // Function to get CSRF token from cookies
+    function getCookie(name) {
+        let cookieValue = null;
+        if (document.cookie && document.cookie !== '') {
+            const cookies = document.cookie.split(';');
+            for (let i = 0; i < cookies.length; i++) {
+                const cookie = cookies[i].trim();
+                if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
         }
+        return cookieValue;
+    }
+
+    document.addEventListener("DOMContentLoaded", () => {
+        getNotifications();
     })
 </script>
 </body>

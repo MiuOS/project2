@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'Nebula.apps.NebulaConfig',
     'users.apps.UsersConfig',
     'movies.apps.MoviesConfig',
+    'notifications',
 ]
 
 MIDDLEWARE = [
