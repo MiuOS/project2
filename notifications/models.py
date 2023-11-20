@@ -34,3 +34,9 @@ class Notification(models.Model):
 
     def get_date(self):
         return self.date.strftime("%d.%m.%Y %H:%M")
+
+def create_notification(users, title, content, color):
+    template = NotificationTemplate(title=title, content=content, color=color)
+    template.save()
+    for user in users:
+        Notification.objects.create(user=user, template=template)

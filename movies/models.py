@@ -2,7 +2,7 @@ from django.core.validators import MinValueValidator, MaxValueValidator
 from django.db import models
 from django.dispatch import receiver
 
-from notifications.models import NotificationTemplate, Notification
+from notifications.models import NotificationTemplate, Notification, create_notification
 from users.models import CustomUser
 from django.db.models.signals import pre_delete, post_save
 
@@ -65,12 +65,6 @@ class Movie(models.Model):
     def __str__(self):
         return f"{self.title} ({self.year})"
 
-    def _create_notification(self, users, title, content, color):
-        template = NotificationTemplate(title=title, content=content, color=color)
-        template.save()
-        for user in users:
-            Notification.objects.create(user=user, template=template)
-
     def send_notification_before_deleted(self):
         # Fetch users who have this movie in their watch later list
         users_watch_later = CustomUser.objects.filter(watch_later_list__movie=self)
@@ -79,7 +73,7 @@ class Movie(models.Model):
 
         # Then, send notifications
         if users_watch_later:
-            self._create_notification(
+            create_notification(
                 users_watch_later,
                 f"Usunięto interesującą Cię pozycję.",
                 f"Film o tytule \"{self.title}\" został usunięty.",
@@ -87,7 +81,7 @@ class Movie(models.Model):
             )
 
         if users_favorite:
-            self._create_notification(
+            create_notification(
                 users_favorite,
                 f"Usunięto jedną z Twoich ulubionych pozycji.",
                 f"Film o tytule \"{self.title}\" został usunięty.",
