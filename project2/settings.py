@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'users.apps.UsersConfig',
     'movies.apps.MoviesConfig',
     'notifications',
+    'payments',
 ]
 
 MIDDLEWARE = [
