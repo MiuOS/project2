@@ -35,7 +35,7 @@ python manage.py migrate
 # utwórz superusera Django jeśli nie istnieje
 echo "from users.models import CustomUser as User; User.objects.create_superuser('admin', 'admin@example.com', 'adminpassword') if not User.objects.filter(username='admin').exists() else None" | python manage.py shell
 
-(crontab -l | grep -v "#unique_1identifier_1" ; echo "$CRON_JOB") | crontab -
+(crontab -l | grep -v "#unique_identifier_1" ; echo "$CRON_JOB") | crontab -
 service cron start
 
 # Uruchom serwer Django

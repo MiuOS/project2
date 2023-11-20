@@ -4,6 +4,8 @@ from datetime import timedelta
 from django.db import models
 from django.utils import timezone
 
+from notifications.models import create_notification
+
 # Create your models here.
 
 subscription_status_choices = [
@@ -71,9 +73,21 @@ def create_payment(subscription):
             else:
                 # Handle failed payment
                 subscription.status = 'expired'
+                create_notification(
+                    [user],
+                    'Płatność nieudana',
+                    'Nie udało się dokonać płatności za subskrypcję. Sprawdź dane karty lub spróbuj ponownie później.',
+                    'is-danger'
+                )
         else:
             # Handle invalid card
             subscription.status = 'expired'
+            create_notification(
+                [user],
+                'Płatność nieudana',
+                'Nie udało się dokonać płatności za subskrypcję. Sprawdź dane karty lub spróbuj ponownie później.',
+                'is-danger'
+            )
     else:
         # If the wallet balance covers the subscription
         subscription.wallet = abs(value_needed)
