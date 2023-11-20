@@ -1,5 +1,10 @@
 from django.core.validators import MinValueValidator, MaxValueValidator
 from django.db import models
+from django.dispatch import receiver
+
+from notifications.models import NotificationTemplate, Notification
+from users.models import CustomUser
+from django.db.models.signals import pre_delete, post_save
 
 # Create your models here.
 
@@ -12,7 +17,7 @@ class Category(models.Model):
 class History(models.Model):
     user = models.ForeignKey("users.CustomUser", on_delete=models.CASCADE, related_name="history")
     movie = models.ForeignKey("Movie", on_delete=models.CASCADE, related_name="history")
-
+#
     def __str__(self):
         return f"{self.user} - {self.movie}"
 
@@ -59,3 +64,50 @@ class Movie(models.Model):
 
     def __str__(self):
         return f"{self.title} ({self.year})"
+
+    def _create_notification(self, users, title, content, color):
+        template = NotificationTemplate(title=title, content=content, color=color)
+        template.save()
+        for user in users:
+            Notification.objects.create(user=user, template=template)
+
+    def send_notification_before_deleted(self):
+        # Fetch users who have this movie in their watch later list
+        users_watch_later = CustomUser.objects.filter(watch_later_list__movie=self)
+        # Fetch users who have this movie in their favorite list
+        users_favorite = CustomUser.objects.filter(favorite_list__movie=self)
+
+        # Then, send notifications
+        if users_watch_later:
+            self._create_notification(
+                users_watch_later,
+                f"Usunięto interesującą Cię pozycję.",
+                f"Film o tytule \"{self.title}\" został usunięty.",
+                "is-info"
+            )
+
+        if users_favorite:
+            self._create_notification(
+                users_favorite,
+                f"Usunięto jedną z Twoich ulubionych pozycji.",
+                f"Film o tytule \"{self.title}\" został usunięty.",
+                "is-info"
+            )
+
+    def send_notification_after_added(self):
+        users = CustomUser.objects.filter(new_movies_notification=True)
+
+        self._create_notification(
+            users,
+            f"Dodano nową pozycję!",
+            f"Właśnie dodano nowy film o tytule \"{self.title}\"",
+            "is-info"
+        )
+
+@receiver(pre_delete, sender=Movie)
+def movie_pre_delete(sender, instance, **kwargs):
+    instance.send_notification_before_deleted()
+
+@receiver(post_save, sender=Movie)
+def movie_post_save(sender, instance, **kwargs):
+    instance.send_notification_after_added()
