@@ -39,4 +39,4 @@ echo "from users.models import CustomUser as User; User.objects.create_superuser
 service cron start
 
 # Uruchom serwer Django
-python manage.py runserver 0.0.0.0:8000
+python manage.py runserver 0.0.0.0:80

@@ -16,9 +16,15 @@ services:
       - .:/app
       - media:/app/media
     ports:
-      - "8000:8000"
+      - "80:80"
     depends_on:
       - db
+    environment:
+      - DB_NAME=dbname
+      - DB_USER=dbuser
+      - DB_PASSWORD=dbpass
+      - DB_HOST=db
+      - DB_PORT=5432
 
 volumes:
   postgres_data:

@@ -1,11 +1,12 @@
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseForbidden
 from django.shortcuts import render, get_object_or_404, redirect
 from django.views.decorators.http import require_POST
 from django.views.generic import ListView, DetailView
 from django.core.paginator import Paginator
 from movies.models import Movie, Category, Review, FavoriteList, WatchLaterList, History
+from payments.models import Subscription, subscription_status_choices
 from .forms import ReviewForm
 
 # Create your views here.
@@ -30,6 +31,20 @@ class MovieDetailView(LoginRequiredMixin, DetailView):
     context_object_name = 'movie'
     login_url = 'login'  # Redirect to login page if not authenticated
     redirect_field_name = 'next'  # Redirect back to the detail view after login
+
+    def dispatch(self, request, *args, **kwargs):
+        # Perform the standard dispatch first
+        response = super().dispatch(request, *args, **kwargs)
+
+        # Add your custom verification logic here
+        if not self.custom_verification(request.user):
+            return HttpResponseForbidden("You do not have permission to view this movie.")
+
+        return response
+
+    def custom_verification(self, user):
+        return Subscription.objects.filter(user=user, status=subscription_status_choices[0][0]).exists()
+
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
