@@ -4,7 +4,11 @@
     <section class="section">
         <div class="container">
             <!-- Nagłówek -->
-            <h1 class="title is-1">Witamy w Nebula</h1>
+            {% if test == "WEB" %}
+                <h1 class="title is-1">Witamy w Nebula</h1>
+            {% elif test == "WEB_1" %}
+                <h1 class="title is-1">Witamy w Nebula!</h1>
+            {% endif %}
             <p class="subtitle">
                 Twoje premierowe miejsce do streamowania fantastycznych filmów i seriali. Odkryj nasze starannie dobrane
                 kolekcje i znajdź swoje następne ulubione filmy lub seriale!

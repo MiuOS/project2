@@ -10,13 +10,13 @@ services:
       - POSTGRES_USER=dbuser
       - POSTGRES_PASSWORD=dbpass
 
-  web:
+  web_1:
     build: .
     volumes:
       - .:/app
       - media:/app/media
     ports:
-      - "80:80"
+      - "8081:8080"
     depends_on:
       - db
     environment:
@@ -25,7 +25,34 @@ services:
       - DB_PASSWORD=dbpass
       - DB_HOST=db
       - DB_PORT=5432
+      - TEST=WEB_1
+    command: ["sh", "runserver.sh"]
 
+  web:
+    build: .
+    volumes:
+      - .:/app
+      - media:/app/media
+    ports:
+      - "8080:8080"
+    depends_on:
+      - db
+    environment:
+      - DB_NAME=dbname
+      - DB_USER=dbuser
+      - DB_PASSWORD=dbpass
+      - DB_HOST=db
+      - DB_PORT=5432
+      - TEST=WEB
+  nginx:
+    image: nginx:latest
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+    depends_on:
+      - web
+      - web_1
 volumes:
   postgres_data:
   media:

@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'movies.apps.MoviesConfig',
     'notifications',
     'payments',
+    'django_extensions',
 ]
 
 MIDDLEWARE = [
@@ -80,10 +81,15 @@ WSGI_APPLICATION = "project2.wsgi.application"
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'dbname',  # Your PostgreSQL database name
+        'USER': 'dbuser',  # Your PostgreSQL user
+        'PASSWORD': 'dbpass',  # Your PostgreSQL password
+        'HOST': 'db',  # Name of your docker-compose service for PostgreSQL
+        'PORT': '5432',  # Default PostgreSQL port
     }
 }
+
 
 
 # Password validation
