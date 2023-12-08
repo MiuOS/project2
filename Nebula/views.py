@@ -9,8 +9,6 @@ class HomeView(TemplateView):
     template_name = 'Nebula/home.html'
 
     def get_context_data(self, **kwargs):
-        time.sleep(10)
-
         context = super().get_context_data(**kwargs)
 
         context['recommendations'] = Recommendation.objects.all()
