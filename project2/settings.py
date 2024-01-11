@@ -135,3 +135,12 @@ MEDIA_ROOT = os.path.join('/app/media', 'django_uploads')
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 AUTH_USER_MODEL = 'users.CustomUser'
+
+# Security & HTTPS settings
+
+SESSION_COOKIE_SECURE = True
+CSRF_COOKIE_SECURE = True
+SECURE_SSL_REDIRECT = False
+
+CORS_ALLOW_ALL_ORIGINS = True
+CSRF_TRUSTED_ORIGINS = ['https://project2sqlite.azurewebsites.net/']
