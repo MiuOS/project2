@@ -64,4 +64,4 @@ jobs:
         with:
           app-name: 'project2sqlite'
           slot-name: 'Production'
-          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_F8E5E82F38F14DF2B633CA80578D1343 }}
+          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_6D17788A815944D9B4F05B684D1089ED }}
